@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/qnYtgne.png">
+    <title>LostCube | Staff Knowledge Base</title>
+    <style>
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif; /* More professional font */
+    background-color: #121212;
+    color: #ddd;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+}
+body::-webkit-scrollbar {
+    display: none;
+  }
+
+/* Header */
+header {
+    background-color: #1f1f1f;
+    color: #4fc3f7;
+    padding: 30px;
+    text-align: center;
+    font-size: 2.4em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border-bottom: 3px solid #444; /* Thicker border for a more polished look */
+}
+
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #2a2a2a;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.5); /* Softer shadow for depth */
+}
+
+/* Section Header */
+.section-header {
+    color: #4fc3f7;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 3px solid #444;
+    padding-bottom: 10px;
+}
+
+/* Article */
+.article {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover Effect for Articles */
+.article:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Article Titles */
+.article h3 {
+    font-size: 1.8em;
+    color: #4fc3f7;
+    margin-bottom: 10px;
+}
+
+/* Article Text */
+.article p {
+    font-size: 1.2em;
+    color: #ddd;
+    line-height: 1.6;
+}
+
+/* Details (hidden content) */
+.details {
+    display: none;
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #ccc;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #222;
+    color: #777;
+    border-top: 3px solid #444;
+    margin-top: 40px;
+}
+
+/* Author Section */
+.author {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #777;
+    text-align: right;
+}
+
+.author .profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.author .profile img {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+
+.author .name {
+    font-weight: bold;
+    color: #fff;
+}
+
+.author .date {
+    font-style: italic;
+    color: #bbb;
+}
+
+/* Ticket Response Template */
+textarea {
+    width: 100%;
+    background-color: #2a2a2a;
+    color: #ddd;
+    border: 2px solid #444;
+    padding: 15px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    resize: vertical;
+}
+body::-webkit-scrollbar {
+    display: none;
+  }
+
+/* Focused Textarea */
+textarea:focus {
+    border-color: #4fc3f7;
+    background-color: #333;
+    outline: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+body::-webkit-scrollbar {
+    display: none;
+  }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .article {
+        padding: 15px;
+    }
+
+    .article h3 {
+        font-size: 1.4em;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        font-size: 1.8em;
+    }
+
+    .article h3 {
+        font-size: 1.2em;
+    }
+
+    .search-bar input[type="text"] {
+        font-size: 1em;
+    }
+}
+
+
+textarea {
+    width: 100%;
+    background-color: #2a2a2a; /* Darker background for contrast */
+    color: #ddd;
+    border: 2px solid #444;
+    padding: 15px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Soft shadow for depth */
+    transition: all 0.3s ease;
+    resize: none; /* Disable manual resizing */
+    min-height: 100px; /* Set a minimum height */
+    overflow: hidden; /* Prevent scrollbars */
+    white-space: pre-wrap; /* Ensure line breaks are handled properly */
+    word-wrap: break-word; /* Break words to prevent overflow */
+}
+
+textarea:focus {
+    border-color: #4fc3f7; /* Blue border on focus */
+    background-color: #333; /* Darker background on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5); /* Intense shadow on focus */
+}
+
+textarea::selection {
+    background-color: #4fc3f7; /* Light blue selection color */
+    color: #121212; /* Dark text for better contrast */
+}
+
+
+
+/* Announcements Section */
+.announcement {
+    background-color: #333; /* Dark background for better contrast */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Add spacing between announcements */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: all 0.3s ease; /* Smooth transition */
+}
+
+.announcement:hover {
+    transform: translateY(-5px); /* Lift up on hover */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.announcement h3 {
+    color: #4fc3f7; /* Soft blue for headings */
+    font-size: 1.8em; /* Larger font size for better readability */
+    margin-bottom: 15px; /* More space below headings */
+    font-weight: bold; /* Bold heading for emphasis */
+    text-transform: uppercase; /* Make heading uppercase for a modern look */
+    letter-spacing: 1px; /* Slight spacing for a clean appearance */
+}
+
+.announcement p {
+    color: #ddd;
+    font-size: 1.2em;
+    line-height: 1.8; /* Increased line height for easier reading */
+    margin-bottom: 10px; /* Add spacing between paragraphs */
+}
+
+/* General Enhancements for Consistent Design */
+body {
+    font-family: 'Roboto', sans-serif; /* Modern, clean font for better readability */
+    background-color: #121212;
+    color: #ddd;
+}
+
+h3, p {
+    font-family: 'Roboto', sans-serif; /* Consistent font family for readability */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    textarea {
+        font-size: 1em; /* Slightly smaller font on smaller screens */
+    }
+
+    .announcement h3 {
+        font-size: 1.6em; /* Adjust heading size on smaller devices */
+    }
+
+    .announcement p {
+        font-size: 1.1em; /* Adjust paragraph size on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    textarea {
+        font-size: 0.95em; /* Adjust font size for smaller devices */
+    }
+
+    .announcement h3 {
+        font-size: 1.4em;
+    }
+
+    .announcement p {
+        font-size: 1em; /* Smaller text for mobile screens */
+    }
+}
+.dashboard-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #4fc3f7; /* Blue background */
+            color: #fff;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dashboard-button:hover {
+            background-color: #1e88e5; /* Darker blue when hovered */
+        }
+
+    </style>
+        <script>
+            // Check if the user is logged in by checking localStorage
+            function goToDashboard() {
+                if (localStorage.getItem('loggedIn') === 'true') {
+                    window.location.href = 'dashboard.html'; // Redirect to dashboard if logged in
+                } else {
+                    alert('You must be logged in to access the dashboard.');
+                    window.location.href = '../login.html'; // Redirect to login page if not logged in
+                }
+            }
+    
+            function logout() {
+                localStorage.removeItem('loggedIn'); // Clear logged in status
+                window.location.href = 'login.html'; // Redirect to login page after logout
+            }
+    
+            // You can also add a check on page load to ensure that only logged-in users can access this page
+            window.onload = function() {
+                if (localStorage.getItem('loggedIn') !== 'true') {
+                    alert('You must be logged in to view this page.');
+                    window.location.href = 'login.html'; // Redirect to login if not logged in
+                }
+            }
+        </script>
+    <script>
+        function toggleDetails(articleId) {
+            const details = document.getElementById(articleId);
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function filterArticles() {
+            const query = document.getElementById('search').value.toLowerCase();
+            const articles = document.querySelectorAll('.article');
+            articles.forEach(article => {
+                const title = article.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(query)) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    
+    
+    <header>Staff Section</header>
+    <div class="container">
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="dashboard-button" onclick="goToDashboard()">Go to Dashboard</button>
+        </div>
+        
+        <script>
+            function goToDashboard() {
+                window.location.href = '../index.html'; // Redirects to dashboard.html
+            }
+        </script>
+        
+        <!-- Announcements Section -->
+<div class="section-header">Announcements & Updates</div>
+
+<div class="article">
+    <h3>Policy Change: Free Servers</h3>
+    <p>Please be aware that we have temporarily suspended our free server program. All related inquiries should be directed to the appropriate team, and customers should be informed accordingly.</p>
+</div>
+<div class="article">
+    <h3>Policy Change: PartnerShips Closed</h3>
+    <p>Please be aware that we have temporarily suspended our Partnership program. All related inquiries should be directed to the appropriate team, and customers should be informed accordingly.</p>
+</div>
+
+
+
+        <!-- Ticket Handling Instructions Section -->
+        <div class="section-header">Ticket Handling Instructions</div>
+        <div class="article" onclick="toggleDetails('details1')">
+            <h3>When a Member Wants to Buy a Server 💻💸🧾</h3>
+            <div id="details1" class="details">
+                <p><strong>Explain the Buying Process:</strong> Clearly outline how the member can purchase a server, including payment methods and available support options.</p>
+            </div>
+            <div class="author">
+                <div class="profile">
+                    <img src="https://i.imgur.com/08ybig1.png" alt="Flux's Profile Picture">
+                    <span class="name">Flux | CEO</span> | <span class="date">December 11, 2024</span>
+                </div>
+            </div>
+        </div>
+        <div class="article" onclick="toggleDetails('details2')">
+            <h3>When a Member Wants a Free Server 🆓💡📬</h3>
+            <div id="details2" class="details">
+                <p><strong>Explain the Steps:</strong> Describe the eligibility criteria and the application process for obtaining a free server.</p>
+            </div>
+            <div class="author">
+                <div class="profile">
+                    <img src="https://i.imgur.com/08ybig1.png" alt="Flux's Profile Picture">
+                    <span class="name">Flux | CEO</span> | <span class="date">December 11, 2024</span>
+                </div>
+            </div>
+        </div>
+        <div class="article" onclick="toggleDetails('details3')">
+            <h3>When a Member Wants to Partner 🤝📈📨</h3>
+            <div id="details3" class="details">
+                <p><strong>Explain the Partnership Process:</strong> Provide information about partnership requirements, application steps, and relevant contact points.</p>
+            </div>
+            <div class="author">
+                <div class="profile">
+                    <img src="https://i.imgur.com/08ybig1.png" alt="Flux's Profile Picture">
+                    <span class="name">Flux | CEO</span> | <span class="date">December 11, 2024</span>
+                </div>
+            </div>
+        </div>
+        <div class="article" onclick="toggleDetails('details4')">
+            <h3>When a Member Needs Assistance 🧑‍💻📞🔧</h3>
+            <div id="details4" class="details">
+                <p><strong>Provide Help:</strong> Listen attentively to the member's issue, offer guidance, and escalate the ticket if needed.</p>
+            </div>
+            <div class="author">
+                <div class="profile">
+                    <img src="https://i.imgur.com/08ybig1.png" alt="Flux's Profile Picture">
+                    <span class="name">Flux | CEO</span> | <span class="date">December 11, 2024</span>
+                </div>
+            </div>
+        </div>
+        <div class="article" onclick="toggleDetails('details5')">
+            <h3>When a Member Needs In-Game Help 🎮🆘👾</h3>
+            <div id="details5" class="details">
+                <p><strong>Offer In-Game Support:</strong> Join the game if necessary or give detailed instructions on how to resolve in-game issues.</p>
+            </div>
+            <div class="author">
+                <div class="profile">
+                    <img src="https://i.imgur.com/08ybig1.png" alt="Flux's Profile Picture">
+                    <span class="name">Flux | CEO</span> | <span class="date">December 11, 2024</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Best Practices Section -->
+        <div class="section-header">Guidelines</div>
+        <div class="article" onclick="toggleDetails('details6')">
+            <h3>Staff Communication Guidelines</h3>
+            <div id="details6" class="details">
+                <p><strong>Be Professional:</strong> Use a polite and respectful tone in all communications.</p>
+                <p><strong>Be Clear:</strong> Communicate in simple and straightforward language, avoiding jargon or ambiguity.</p>
+                <p><strong>Be Accurate:</strong> Always provide correct and up-to-date information.</p>
+                <p><strong>Be Proactive:</strong> Follow up on unresolved issues to ensure customer satisfaction.</p>
+            </div>
+        </div>
+
+        <!-- Important Staff Information Section -->
+        <div class="section-header">Important Information ⚙️</div>
+        <div class="article" onclick="toggleDetails('details7')">
+            <h3>Operational Guidelines</h3>
+            <div id="details7" class="details">
+                <p><strong>Payment Methods:</strong> UPI & PayPal</p>
+                <p><strong>Partnerships:</strong> Currently closed</p>
+                <p><strong>Free Servers:</strong> Unavailable at this time</p>
+                <p><strong>Server Purchase:</strong> If the user specifies the plans they wish to purchase, provide all necessary information and escalate to a higher authority for ticket continuation.</p>
+                <p><strong>In-Game Help:</strong> Available only for paid users.</p>
+                <p><strong>Panel Assistance:</strong> Available for all users.</p>
+                <p><strong>Language Requirement:</strong> All communication should be in English. If a user refuses to speak English, advise them accordingly. If they persist, close the ticket or refrain from responding.</p>
+                <p><strong>Incorrect Ticket Types:</strong> Close the ticket if it is categorized incorrectly.</p>
+            </div>
+            <div class="author">
+                <div class="profile">
+                    <img src="https://i.imgur.com/08ybig1.png" alt="Flux's Profile Picture">
+                    <span class="name">Flux | CEO</span> | <span class="date">December 11, 2024</span>
+                </div>
+            </div>
+        </div>
+        <!-- Ticket Templates Section -->
+<div class="section-header">Ticket Response Templates</div>
+<div class="article">
+    <h3>Template 1: Server Issue Response</h3>
+    <textarea rows="5" cols="60" readonly>
+        Dear {Member Name},
+
+        We have received your request regarding the server issue. Our team is currently investigating the problem. 
+        Please provide us with the following details:
+        - Server Name
+        - Any error messages displayed in the Console
+
+        We will resolve this issue as quickly as possible and update you once it's fixed.
+
+        Best Regards,
+        {Staff Name}
+    </textarea>
+</div>
+
+<div class="article">
+    <h3>Template 2: Account Issue Response</h3>
+    <textarea rows="5" cols="60" readonly>
+        Dear {Member Name},
+
+        We understand you are facing issues with your account. Please try the following troubleshooting steps:
+        - Clear your browser cache and cookies
+        - Try accessing the account on a different browser or device
+
+        If the issue persists, let us know, and we will assist you further.
+
+        Best Regards,
+        {Staff Name}
+    </textarea>
+</div>
+
+<div class="article">
+    <h3>Template 3: General Inquiry Response</h3>
+    <textarea rows="5" cols="60" readonly oninput="autoResize(this)">
+        Dear {Member Name},
+
+        Thank you for reaching out. We have received your inquiry and will get back to you shortly. 
+        In the meantime, feel free to browse our FAQ for any immediate assistance.
+
+        Best Regards,
+        {Staff Name}
+    </textarea>
+</div>
+
+<script>
+    function autoResize(element) {
+        element.style.height = 'auto'; // Reset height to auto to shrink if needed
+        element.style.height = (element.scrollHeight) + 'px'; // Adjust the height to fit content
+    }
+
+    // Call autoResize once on page load to ensure proper sizing
+    window.onload = function() {
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(textarea => autoResize(textarea));
+    }
+</script>
+
+
+    
+    <footer>
+        &copy; 2024 Staff Knowledge Base. All Rights Reserved.
+    </footer>
+</body>
+</html>
+
+<script>
+    function autoResize(element) {
+        element.style.height = 'auto'; // Reset height to auto to shrink if needed
+        element.style.height = (element.scrollHeight) + 'px'; // Set height based on content
+    }
+</script>
+
+<script>
+    // Display saved articles
+    function displayArticles() {
+        const articles = JSON.parse(localStorage.getItem("articles")) || [];
+        const articlesList = document.getElementById("articlesList");
+
+        articlesList.innerHTML = "";
+
+        articles.forEach((article, index) => {
+            const articleDiv = document.createElement("div");
+            articleDiv.classList.add("article");
+
+            const articleTitle = document.createElement("h3");
+            articleTitle.textContent = article.title;
+
+            const articleContent = document.createElement("p");
+            articleContent.textContent = article.content;
+
+            articleDiv.appendChild(articleTitle);
+            articleDiv.appendChild(articleContent);
+            articlesList.appendChild(articleDiv);
+        });
+    }
+
+    // Filter articles by search query
+    function filterArticles() {
+        const query = document.getElementById('search').value.toLowerCase();
+        const articles = document.querySelectorAll('.article');
+        articles.forEach(article => {
+            const title = article.querySelector('h3').textContent.toLowerCase();
+            if (title.includes(query)) {
+                article.style.display = 'block';
+            } else {
+                article.style.display = 'none';
+            }
+        });
+    }
+
+    // Ensure articles are displayed when page loads
+    window.onload = function () {
+        displayArticles();
+    };
+</script>

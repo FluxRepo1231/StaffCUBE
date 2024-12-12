@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | LostCube</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Include your CSS styles from the previous answer for important notice */
+        .important-notice {
+            background: linear-gradient(135deg, #ff3f3f, #ff9966);
+            padding: 20px;
+            border-radius: 12px;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .important-notice h2 {
+            margin: 0;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            background: transparent;
+            color: #fff;
+            border: none;
+            font-size: 1.2em;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #ffec3d;
+        }
+
+        .important-notice button {
+            background: #ffec3d;
+            color: #121212;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+
+        .important-notice button:hover {
+            background: #ffcd00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Dashboard</h2>
+
+            <nav>
+                <ul>
+                    <li><a href="./Part/staff.html">Staff</a></li>
+                    <li><a href="./Part/log.html">Logs</a></li>
+                    <li><a href="./Part/customize.html">Customize Account</a></li>
+                    <li><a href="./Part/Notice.html">Notices</a></li> <!-- Link to Notice.html -->
+                </ul>
+            </nav>
+            <button class="logout">Logout</button>
+        </aside>
+
+        <main class="content">
+            <section id="staff">
+                <h1>Welcome, <span id="staffName">Staff</span></h1>
+                <p>Welcome To LostCube Staff Dashboard.</p>
+            </section>
+
+            <section id="logs">
+                <h1>Staff Logs</h1>
+                <div class="log-list" id="logList"></div>
+            </section>
+
+            <section id="notices">
+                <h1>Important Notices</h1>
+                <div class="notice-list" id="noticeList"></div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        let currentStaffUsername = localStorage.getItem("currentStaff");
+        const currentStaff = JSON.parse(localStorage.getItem(currentStaffUsername));
+
+        if (!currentStaffUsername) {
+            window.location.href = "login.html";  // Redirect if not logged in
+        }
+
+        // Display current staff name in main content
+        document.getElementById('staffName').textContent = currentStaff.displayName || currentStaff.username;
+
+        // Display Profile Picture in Top-Right Corner (Not in Sidebar)
+        if (currentStaff.profilePicture) {
+            const img = document.createElement('img');
+            img.src = currentStaff.profilePicture;
+            img.alt = "Profile Picture";
+            img.id = "profilePicture";  // Assign an ID to the profile picture for CSS targeting
+            document.body.appendChild(img);  // Append directly to body (not sidebar)
+        }
+
+        // Load logs (Example of logs functionality)
+        const logList = document.getElementById('logList');
+        const noticeList = document.getElementById('noticeList');
+
+        window.onload = function() {
+            const logs = JSON.parse(localStorage.getItem('staffLogs')) || [];
+            logList.innerHTML = "";
+            if (logs.length === 0) {
+                logList.innerHTML = "<p>No logs available.</p>";
+            } else {
+                logs.forEach(addLogToList);
+            }
+
+            const notices = JSON.parse(localStorage.getItem('importantNotices')) || [];
+            noticeList.innerHTML = "";
+            if (notices.length === 0) {
+                noticeList.innerHTML = "<p>No important notices available.</p>";
+            } else {
+                notices.forEach(addNoticeToList);
+            }
+        };
+
+        function addLogToList(log) {
+            const logItem = document.createElement('div');
+            logItem.classList.add('log-item');
+            logItem.innerHTML = ` 
+                <h3>${log.title}</h3>
+                <p>${log.details}</p>
+                <small>Logged by: ${log.staff} on ${log.date}</small>
+            `;
+            logList.appendChild(logItem);
+        }
+
+        function addNoticeToList(notice) {
+            const noticeItem = document.createElement('div');
+            noticeItem.classList.add('important-notice');
+            noticeItem.dataset.id = notice.id;
+            noticeItem.innerHTML = ` 
+                <button class="close-btn" onclick="removeNotice(${notice.id})">×</button>
+                <h2>${notice.title}</h2>
+                <p>${notice.details}</p>
+                <button onclick="acknowledgeNotice(${notice.id})">Acknowledge</button>
+            `;
+            noticeList.appendChild(noticeItem);
+        }
+
+        function removeNotice(noticeId) {
+            if (confirm('Are you sure you want to remove this notice?')) {
+                // Remove from localStorage
+                const notices = JSON.parse(localStorage.getItem('importantNotices')) || [];
+                const updatedNotices = notices.filter(notice => notice.id !== noticeId);
+                localStorage.setItem('importantNotices', JSON.stringify(updatedNotices));
+
+                // Remove from DOM
+                const noticeItem = document.querySelector(`.important-notice[data-id="${noticeId}"]`);
+                if (noticeItem) {
+                    noticeList.removeChild(noticeItem);
+                }
+            }
+        }
+
+        function acknowledgeNotice(noticeId) {
+            // Update notice color to green
+            const noticeItem = document.querySelector(`.important-notice[data-id="${noticeId}"]`);
+            if (noticeItem) {
+                noticeItem.style.background = '#4caf50'; // Change background color to green
+                noticeItem.innerHTML = `<h2>Notice Acknowledged</h2><p>Thank you for acknowledging the notice.</p>`;
+                noticeItem.querySelector('button').style.display = 'none'; // Hide acknowledge button
+            }
+        }
+
+        // Logout functionality
+        document.querySelector('.logout').addEventListener('click', function() {
+            localStorage.removeItem("currentStaff");  // Remove current staff session
+            window.location.href = "./Part/login.html";  // Redirect to login page
+        });
+    </script>
+</body>
+</html>

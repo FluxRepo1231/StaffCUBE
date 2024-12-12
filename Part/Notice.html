@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Important Notice</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/qnYtgne.png">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #ddd;
+            padding: 30px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4fc3f7;
+            margin-bottom: 30px;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #ff3f3f, #ff9966);
+            padding: 20px;
+            border-radius: 12px;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .important-notice h2 {
+            margin: 0;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .important-notice p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            background: transparent;
+            color: #fff;
+            border: none;
+            font-size: 1.2em;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #ffec3d;
+        }
+
+        .important-notice button {
+            background: #ffec3d;
+            color: #121212;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+
+        .important-notice button:hover {
+            background: #ffcd00;
+        }
+
+        /* Form to add new notices */
+        .notice-form {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .notice-form input, .notice-form textarea, .notice-form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #222;
+            color: #ddd;
+        }
+
+        .notice-form button {
+            background: #4caf50;
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        .notice-form button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Important Notices</h1>
+
+    <!-- Form to add new notices -->
+    <div class="notice-form">
+        <input type="text" id="noticeTitle" placeholder="Notice Title" required>
+        <textarea id="noticeDetails" placeholder="Details about the notice" rows="4" required></textarea>
+        <button onclick="addNotice()">Add Notice</button>
+    </div>
+
+    <!-- Container for displaying notices -->
+    <div id="noticeList"></div>
+
+    <script>
+        // Load existing notices from localStorage on page load
+        window.onload = function() {
+            loadNotices();
+        };
+
+        // Function to load and display notices from localStorage
+        function loadNotices() {
+            const notices = JSON.parse(localStorage.getItem('importantNotices')) || [];
+            const noticeList = document.getElementById('noticeList');
+            noticeList.innerHTML = '';
+
+            if (notices.length === 0) {
+                noticeList.innerHTML = "<p>No important notices available.</p>";
+            } else {
+                notices.forEach(addNoticeToList);
+            }
+        }
+
+        // Function to add new notice to localStorage
+        function addNotice() {
+            const title = document.getElementById('noticeTitle').value;
+            const details = document.getElementById('noticeDetails').value;
+
+            if (title && details) {
+                const notices = JSON.parse(localStorage.getItem('importantNotices')) || [];
+                const newNotice = {
+                    id: Date.now(),
+                    title: title,
+                    details: details
+                };
+                notices.push(newNotice);
+                localStorage.setItem('importantNotices', JSON.stringify(notices));
+
+                // Clear input fields
+                document.getElementById('noticeTitle').value = '';
+                document.getElementById('noticeDetails').value = '';
+
+                // Reload notices
+                loadNotices();
+            }
+        }
+
+        // Function to remove notice
+        function removeNotice(noticeId) {
+            const notices = JSON.parse(localStorage.getItem('importantNotices')) || [];
+            const updatedNotices = notices.filter(notice => notice.id !== noticeId);
+            localStorage.setItem('importantNotices', JSON.stringify(updatedNotices));
+
+            loadNotices(); // Reload notices after removal
+        }
+
+        // Function to acknowledge notice
+        function acknowledgeNotice(noticeId) {
+            const notices = JSON.parse(localStorage.getItem('importantNotices')) || [];
+            const notice = notices.find(n => n.id === noticeId);
+            notice.acknowledged = true;
+            localStorage.setItem('importantNotices', JSON.stringify(notices));
+
+            // Reload notices to reflect changes
+            loadNotices();
+        }
+
+        // Function to display notice
+        function addNoticeToList(notice) {
+            const noticeList = document.getElementById('noticeList');
+            const noticeItem = document.createElement('div');
+            noticeItem.classList.add('important-notice');
+            noticeItem.dataset.id = notice.id;
+
+            // Acknowledge button
+            const acknowledgeButton = notice.acknowledged ? '<button disabled>Acknowledged</button>' : `<button onclick="acknowledgeNotice(${notice.id})">Acknowledge</button>`;
+            
+            noticeItem.innerHTML = `
+                <button class="close-btn" onclick="removeNotice(${notice.id})">×</button>
+                <h2>${notice.title}</h2>
+                <p>${notice.details}</p>
+                ${acknowledgeButton}
+            `;
+            noticeList.appendChild(noticeItem);
+        }
+    </script>
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="dashboard-button" onclick="goToDashboard()">Go to Dashboard</button>
+            </div>
+            
+            <script>
+                function goToDashboard() {
+                    window.location.href = '../index.html'; // Redirects to dashboard.html
+                }
+            </script>
+<style>.dashboard-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #4fc3f7; /* Blue background */
+    color: #fff;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-button:hover {
+    background-color: #1e88e5; /* Darker blue when hovered */
+}
+</style>    
+</body>
+</html>
